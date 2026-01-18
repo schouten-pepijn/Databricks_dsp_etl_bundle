@@ -2,11 +2,15 @@
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
   name: etl_medallion
-  uuid: 7ddb4347-cdbb-4a85-b91c-01f6ea59f6ef
+  uuid: 7ddb4347-cdbb-4a85-b91c-01f6ea59f6eg
 
 include:
   - resources/*.yml
   - resources/*/*.yml
+
+sync:
+  include:
+    - src/**
 
 artifacts:
   python_artifact:
@@ -30,6 +34,7 @@ targets:
     default: true
     workspace:
       host: https://dbc-265ae23b-9e69.cloud.databricks.com
+      root_path: /Workspace/Users/pepijn.schsch@gmail.com/bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
       schema: ${workspace.current_user.short_name}
@@ -37,8 +42,7 @@ targets:
     mode: production
     workspace:
       host: https://dbc-265ae23b-9e69.cloud.databricks.com
-      # We explicitly deploy to /Workspace/Users/pepijn.schsch@gmail.com to make sure we only have a single copy.
-      root_path: /Workspace/Users/pepijn.schsch@gmail.com/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/pepijn.schsch@gmail.com/bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
       schema: prod
