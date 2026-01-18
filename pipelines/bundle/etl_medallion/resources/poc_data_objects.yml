@@ -1,22 +1,18 @@
 resources:
-  catalogs:
-    poc_databricks_catalog:
-      name: poc_databricks_catalog
-
   schemas:
     etl_demo:
+      catalog_name: ${var.catalog}
       name: etl_demo
-      catalog_name: ${resources.catalogs.poc_databricks_catalog.name}
-
+  
   volumes:
     raw_landing:
       name: raw_landing
-      catalog_name: ${resources.catalogs.poc_databricks_catalog.name}
+      catalog_name: ${var.catalog}
       schema_name: ${resources.schemas.etl_demo.name}
       volume_type: MANAGED
-
+    
     checkpoints:
       name: checkpoints
-      catalog_name: ${resources.catalogs.poc_databricks_catalog.name}
+      catalog_name: ${var.catalog}
       schema_name: ${resources.schemas.etl_demo.name}
       volume_type: MANAGED

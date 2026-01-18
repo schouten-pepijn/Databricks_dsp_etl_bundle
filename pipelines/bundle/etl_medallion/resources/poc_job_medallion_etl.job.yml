@@ -5,7 +5,7 @@ resources:
       trigger:
         pause_status: UNPAUSED
         file_arrival:
-          url: /Volumes/poc_databricks_catalog/etl_demo/raw_landing/customers/
+          url: /Volumes/${var.catalog}/${resources.schemas.etl_demo.name}/${resources.volumes.raw_landing.name}/
       tasks:
         - task_key: poc_dsp_medallion_etl
           pipeline_task:
