@@ -7,17 +7,12 @@ resources:
         "BRONZE_CUSTOMERS_SCHEMA_LOCATION": "/Volumes/poc_databricks_catalog/etl_demo/checkpoints/bronze_customers/_schema"
         "RAW_CUSTOMER_PATH": "/Volumes/poc_databricks_catalog/etl_demo/raw_landing/customers"
       libraries:
-        - file:
-            path: ../src/pipeline/bronze/bronze_customers.py
-        - file:
-            path: ../src/pipeline/silver/silver_customers.py
-        - file:
-            path: ../src/pipeline/silver/silver_errors.py
-        - file:
-            path: ../src/pipeline/gold/gold_costomers_agg.py
+        - glob:
+            include: ../src/pipeline/**
       catalog: poc_databricks_catalog
       channel: CURRENT
       continuous: false
       photon: true
+      root_path: ../src
       schema: etl_demo
       serverless: true

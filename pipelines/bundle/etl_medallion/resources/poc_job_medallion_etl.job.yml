@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    poc_job_medallion_etl:
+      name: poc_job_medallion_etl
+      trigger:
+        pause_status: UNPAUSED
+        file_arrival:
+          url: /Volumes/poc_databricks_catalog/etl_demo/raw_landing/customers/
+      tasks:
+        - task_key: poc_dsp_medallion_etl
+          pipeline_task:
+            pipeline_id: 3f1aefa1-903e-4e5b-825e-dd166bc02033
+            full_refresh: false
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
