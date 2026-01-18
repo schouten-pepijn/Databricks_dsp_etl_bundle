@@ -3,9 +3,9 @@ resources:
     poc_dsp_medallion_etl:
       name: poc_dsp_medallion_etl
       configuration:
-        "BRONZE_CUSTOMERS_CHECKPOINT": "/Volumes/${var.catalog}/${var.schema}/${resources.volumes.checkpoints.name}/bronze_customers"
-        "BRONZE_CUSTOMERS_SCHEMA_LOCATION": "/Volumes/${var.catalog}/${var.schema}/${resources.volumes.checkpoints.name}/bronze_customers/_schema"
-        "RAW_CUSTOMER_PATH": "/Volumes/${var.catalog}/${var.schema}/${resources.volumes.raw_landing.name}"
+        "BRONZE_CUSTOMERS_CHECKPOINT": "/Volumes/${var.catalog}/${resources.schemas.etl_demo.name}/${resources.volumes.checkpoints.name}/bronze_customers"
+        "BRONZE_CUSTOMERS_SCHEMA_LOCATION": "/Volumes/${var.catalog}/${resources.schemas.etl_demo.name}/${resources.volumes.checkpoints.name}/bronze_customers/_schema"
+        "RAW_CUSTOMER_PATH": "/Volumes/${var.catalog}/${resources.schemas.etl_demo.name}/${resources.volumes.raw_landing.name}"
       libraries:
         - glob:
             include: ../src/pipeline/**
@@ -14,5 +14,5 @@ resources:
       continuous: false
       photon: true
       root_path: ../src
-      schema: ${var.schema}
+      schema: ${resources.schemas.etl_demo.name}
       serverless: true
