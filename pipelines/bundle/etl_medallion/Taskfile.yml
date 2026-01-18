@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  validate:
+    desc: Validate Databricks bundle configuration
+    cmds:
+      - databricks bundle validate
+
+  deploy-dev:
+    desc: Validate and deploy the bundle to dev
+    cmds:
+      - task: validate
+      - databricks bundle deploy --target dev
+  
+  deploy-prod:
+    desc: Validate and deploy the bundle to prod
+    cmds:
+      - task: validate
+      - databricks bundle deploy --target prod

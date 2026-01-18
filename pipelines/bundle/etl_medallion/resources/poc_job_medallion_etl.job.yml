@@ -9,7 +9,7 @@ resources:
       tasks:
         - task_key: poc_dsp_medallion_etl
           pipeline_task:
-            pipeline_id: 3f1aefa1-903e-4e5b-825e-dd166bc02033
+            pipeline_id: ${resources.pipelines.poc_dsp_medallion_etl.id}
             full_refresh: false
       queue:
         enabled: true
