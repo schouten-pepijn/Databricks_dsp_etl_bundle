@@ -2,7 +2,8 @@ resources:
   schemas:
     etl_demo:
       catalog_name: ${var.catalog}
-      name: etl_demo
+      # change name if we want a different demo schema
+      name: etl_demo  
   
   volumes:
     raw_landing:
