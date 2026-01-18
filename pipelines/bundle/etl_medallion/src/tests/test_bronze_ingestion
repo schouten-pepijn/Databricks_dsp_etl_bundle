@@ -1,0 +1,27 @@
+# Databricks notebook source
+# test_bronze_ingestion
+from pyspark.sql.functions import input_file_name
+
+# 2) Table existence
+try:
+    df_bronze = spark.table("poc_databricks_catalog.etl_demo.bronze_customers")
+    print("✔ Bronze table exists")
+except Exception as e:
+    raise AssertionError("Bronze table not found") from e
+
+# 3) Schema validation
+expected_cols = {"customer_id", "first_name", "last_name", "email", "country", "signup_date", "_source_file"}
+actual_cols = set(df_bronze.columns)
+
+assert expected_cols.issubset(actual_cols), f"Missing expected bronze columns: {expected_cols - actual_cols}"
+
+print("✔ Bronze schema contains expected columns")
+
+# 4) Sample data present
+count = df_bronze.count()
+assert count > 0, "❌ No records found in bronze_customers"
+print(f"✔ Bronze contains {count} records")
+
+# 5) Source file metadata check
+df_meta = df_bronze.select("_source_file").distinct().limit(5).collect()
+print("Distinct source files:", df_meta)

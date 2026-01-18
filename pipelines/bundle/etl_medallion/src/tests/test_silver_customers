@@ -1,0 +1,33 @@
+# Databricks notebook source
+# test_silver_customers
+from pyspark.sql.functions import col
+
+# 1) Load silver
+try:
+    df_silver = spark.table("poc_databricks_catalog.etl_demo.silver_customers")
+    print("✔ Silver table exists")
+except Exception as e:
+    raise AssertionError("Silver table not found") from e
+
+# 2) Schema validation
+expected_silver_cols = {"customer_id", "first_name", "last_name", "email", "country", "signup_date" "_source_file"}
+actual_silver_cols = set(df_silver.columns)
+
+assert expected_silver_cols.issubset(actual_silver_cols), f"Missing silver columns: {expected_silver_cols - actual_silver_cols}"
+print("✔ Silver schema ok")
+
+# 3) No null business keys
+null_keys = df_silver.filter(col("customer_id").isNull()).count()
+assert null_keys == 0, f"❌ Found {null_keys} null customer_id values"
+print("✔ No null business keys")
+
+# 4) Deduplication check
+counts = df_silver.groupBy("customer_id").count()
+dup_count = counts.filter(col("count") > 1).count()
+
+assert dup_count == 0, f"❌ {dup_count} duplicates in silver"
+print("✔ Silver properly deduplicated (no duplicates)")
+
+# 5) Manual value spot check
+sample = df_silver.select("customer_id", "first_name", "country").limit(10).collect()
+print("Sample rows:", sample)

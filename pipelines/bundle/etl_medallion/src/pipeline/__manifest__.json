@@ -1,0 +1,9 @@
+{
+  "entrypoints": [
+    "bronze/bronze_customers.py",
+    "silver/silver_customers.py",
+    "silver/silver_errors.py",
+    "gold/gold_customers_agg.py",
+    "utils/schemas.py"
+  ]
+}

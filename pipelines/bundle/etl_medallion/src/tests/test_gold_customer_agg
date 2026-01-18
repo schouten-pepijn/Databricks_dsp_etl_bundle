@@ -1,0 +1,28 @@
+# Databricks notebook source
+# test_gold_customer_agg
+from pyspark.sql.functions import col
+
+# 1) Table existence
+try:
+    df_gold = spark.table("poc_databricks_catalog.etl_demo.gold_customer_counts")
+    print("✔ Gold table exists")
+except:
+    raise AssertionError("Gold table not found")
+
+# 2) Schema validation
+expected_gold_cols = {"country", "cust_count"}
+actual_gold_cols = set(df_gold.columns)
+
+assert expected_gold_cols.issubset(actual_gold_cols), f"Missing gold columns: {expected_gold_cols - actual_gold_cols}"
+
+print("✔ Gold schema ok")
+
+# 3) Non-negative counts
+negatives = df_gold.filter(col("cust_count") < 0).count()
+assert negatives == 0, "❌ Negative customer counts present"
+print("✔ No negative counts")
+
+# 4) Simple sanity check
+df_gold.sort(col("cust_count").desc()).show(10)
+
+print("✔ Gold aggregation test done")

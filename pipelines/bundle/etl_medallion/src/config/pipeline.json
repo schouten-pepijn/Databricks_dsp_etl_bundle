@@ -1,0 +1,19 @@
+{
+  "name": "poc_medallion_etl",
+  "defaultCatalog": "poc_medallion_etl",
+  "defaultSchema": "etl_demo",
+  "trigger": "continuous",
+  "clusters": [
+    {
+      "label": "default",
+      "num_workers": 2,
+      "spark_version": "13.3.x-scala2.12",
+      "node_type_id": "Standard_DS3_v2"
+    }
+  ],
+  "variables": {
+    "RAW_CUSTOMER_PATH": "${RAW_CUSTOMER_PATH}",
+    "BRONZE_CUSTOMERS_CHECKPOINT": "${BRONZE_CUSTOMERS_CHECKPOINT}",
+    "BRONZE_CUSTOMERS_SCHEMA_LOCATION": "${BRONZE_CUSTOMERS_SCHEMA_LOCATION}"
+  }
+}
