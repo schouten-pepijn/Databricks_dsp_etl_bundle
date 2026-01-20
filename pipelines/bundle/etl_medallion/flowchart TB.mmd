@@ -1,0 +1,15 @@
+flowchart TB
+  A["Repo: etl_medallion bundle"] --> B["databricks.yml"]
+  A --> T["Taskfile: task deploy-dev | deploy-prod"]
+  B --> C["databricks bundle deploy --target dev/prod"]
+  T --> C
+
+  subgraph W["Databricks workspace"]
+    D["UC schema + volumes"]
+    E["SDP pipeline: poc_dsp_medallion_etl"]
+    F["Job: poc_job_medallion_etl<br/>(file-arrival trigger)"]
+  end
+
+  C --> W
+  D --> E
+  F --> E

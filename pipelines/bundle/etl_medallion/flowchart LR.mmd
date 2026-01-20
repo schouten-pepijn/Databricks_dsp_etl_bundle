@@ -1,0 +1,16 @@
+flowchart LR
+  A["Raw JSON files"] --> B["UC volume: raw_landing"]
+  B --> C["SDP pipeline: poc_dsp_medallion_etl"]
+  D["UC volume: checkpoints"] --> C
+
+  C --> E["SDP streaming table: bronze_customers<br/>(Auto Loader + schema)"]
+  E --> F["SDP mv: silver_customers<br/>(dedupe by customer_id)"]
+  E --> G["SDP mv: silver_erros<br/>(missing customer_id)"]
+  F --> H["SDP mv: gold_customer_counts<br/>(count by country)"]
+
+  subgraph UC["Unity Catalog schema: etl_demo"]
+    E
+    F
+    G
+    H
+  end
