@@ -4,10 +4,7 @@ module "unity_catalog" {
 
     catalog_name = var.catalog_name
     schema_name  = var.schema_name
-    owner_group  = var.owner_group_name
-    raw_volume_name = "raw_landing"
-    checkpoint_volume_name = "checkpoints"
-    volume_type = "MANAGED"
+    owner_group  = databricks_group.etl_team.display_name
 }
 
 # Group for access control

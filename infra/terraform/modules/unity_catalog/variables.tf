@@ -21,7 +21,7 @@ variable "raw_volume_name" {
 
 variable "checkpoint_volume_name" {
     type = string
-    default = "checkpoint"
+    default = "checkpoints"
     description = "The name of the checkpoint volume in Unity Catalog."
 }
 

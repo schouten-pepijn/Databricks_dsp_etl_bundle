@@ -1,41 +1,37 @@
-# Catalog
 resource "databricks_catalog" "main" {
-    name = var.catalog_name
-    comment = "UC Catalog owned by Terraform"
+  name    = var.catalog_name
+  comment = "UC Catalog managed by Terraform"
 }
 
-# Schema
 resource "databricks_schema" "main" {
-    catalog_name = databricks_catalog.main.name
-    name = var.schema_name
-    comment = "Schema for Medallion ETL"
+  catalog_name = databricks_catalog.main.name
+  name         = var.schema_name
+  comment      = "Schema for ETL"
 }
 
-# Raw/Landing Volumne
 resource "databricks_volume" "raw_landing" {
-    name = var.raw_volume_name
-    schema_name = databricks_schema.main.name
-    catalog_name = databricks_catalog.main.name
-    volume_type = var.volume_type
-    comment = "Raw landing volume for Medallion ETL"
+  catalog_name = databricks_catalog.main.name
+  schema_name  = databricks_schema.main.name
+  name         = var.raw_volume_name
+  volume_type  = var.volume_type
+  comment      = "Raw/landing data volume"
 }
 
-# Checkpoints Volumne
 resource "databricks_volume" "checkpoints" {
-    name = var.checkpoint_volume_name
-    schema_name = databricks_schema.main.name
-    catalog_name = databricks_catalog.main.name
-    volume_type = var.volume_type
-    comment = "Checkpoints volume for Medallion ETL"
+  catalog_name = databricks_catalog.main.name
+  schema_name  = databricks_schema.main.name
+  name         = var.checkpoint_volume_name
+  volume_type  = var.volume_type
+  comment      = "Streaming checkpoints volume"
 }
 
-# Grants: Owner Group is OWNER on everything
+# Grants for owner group
 resource "databricks_grants" "catalog" {
   catalog = databricks_catalog.main.name
 
   grant {
     principal  = var.owner_group
-    permission = "OWNER"
+    privileges = ["OWN"]
   }
 }
 
@@ -44,24 +40,24 @@ resource "databricks_grants" "schema" {
 
   grant {
     principal  = var.owner_group
-    permission = "OWNER"
+    privileges = ["OWN"]
   }
 }
 
 resource "databricks_grants" "raw_landing" {
-  volume = databricks_volume.raw_landing.full_name
+  volume = "${databricks_catalog.main.name}.${databricks_schema.main.name}.${databricks_volume.raw_landing.name}"
 
   grant {
     principal  = var.owner_group
-    permission = "OWNER"
+    privileges = ["OWN"]
   }
 }
 
 resource "databricks_grants" "checkpoints" {
-  volume = databricks_volume.checkpoints.full_name
+  volume = "${databricks_catalog.main.name}.${databricks_schema.main.name}.${databricks_volume.checkpoints.name}"
 
   grant {
     principal  = var.owner_group
-    permission = "OWNER"
+    privileges = ["OWN"]
   }
 }
