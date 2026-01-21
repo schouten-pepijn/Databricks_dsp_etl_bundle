@@ -33,16 +33,16 @@ targets:
     mode: development
     default: true
     workspace:
-      host: https://dbc-265ae23b-9e69.cloud.databricks.com
-      root_path: /Workspace/Users/pepijn.schsch@gmail.com/bundle/${bundle.name}/${bundle.target}
+      host: ${env.DATABRICKS_HOST}
+      root_path: ${env.BUNDLE_ROOT_PATH_BASE_DEV}/${workspace.current_user.user_name}/bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
       schema: ${workspace.current_user.short_name}
   prod:
     mode: production
     workspace:
-      host: https://dbc-265ae23b-9e69.cloud.databricks.com
-      root_path: /Workspace/Users/pepijn.schsch@gmail.com/bundle/${bundle.name}/${bundle.target}
+      host: ${env.DATABRICKS_HOST}
+      root_path: ${env.BUNDLE_ROOT_PATH_BASE_PROD}/bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
       schema: prod

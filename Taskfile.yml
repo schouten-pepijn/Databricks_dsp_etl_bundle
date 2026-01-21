@@ -1,0 +1,65 @@
+version: "3"
+dotenv: [".env"]
+
+tasks:
+  # Terraform tasks
+  tf:init-dev:
+    desc: Initialize Terraform for dev
+    dir: infra/terraform/environments/dev
+    cmds:
+      - terraform init -input=false
+
+  tf:plan-dev:
+    desc: Terraform plan for dev
+    dir: infra/terraform/environments/dev
+    cmds:
+      - task: tf:init-dev
+      - terraform plan -var databricks_host=${DATABRICKS_HOST} -var databricks_token=${DATABRICKS_TOKEN}
+
+  tf:apply-dev:
+    desc: Terraform apply for dev
+    dir: infra/terraform/environments/dev
+    cmds:
+      - task: tf:init-dev
+      - terraform apply -auto-approve -var databricks_host=${DATABRICKS_HOST} -var databricks_token=${DATABRICKS_TOKEN}
+
+  # Bundle tasks
+  bundle:validate:
+    desc: Validate Databricks bundle configuration
+    dir: pipelines/bundle/etl_medallion
+    cmds:
+      - databricks bundle validate
+
+  bundle:deploy-dev:
+    desc: Deploy bundle to dev
+    dir: pipelines/bundle/etl_medallion
+    cmds:
+      - task: bundle:validate
+      - databricks bundle deploy --target dev
+
+  bundle:deploy-prod:
+    desc: Deploy bundle to prod
+    dir: pipelines/bundle/etl_medallion
+    cmds:
+      - task: bundle:validate
+      - databricks bundle deploy --target prod
+
+  # Full deployment workflows
+  deploy-dev:
+    desc: Provision infra + deploy bundle to dev
+    cmds:
+      - task: tf:apply-dev
+      - task: bundle:deploy-dev
+
+  deploy-prod:
+    desc: Provision infra + deploy bundle to prod
+    cmds:
+      - task: tf:apply-prod
+      - task: bundle:deploy-prod
+
+  # Destroy tasks
+  tf:destroy-dev:
+    desc: Destroy Terraform-managed resources in dev
+    dir: infra/terraform/environments/dev
+    cmds:
+      - terraform destroy -auto-approve -var databricks_host=${DATABRICKS_HOST} -var databricks_token=${DATABRICKS_TOKEN}
