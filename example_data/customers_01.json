@@ -1,0 +1,6 @@
+{"customer_id":"C001","first_name":"Alice","last_name":"Smith","email":"alice.smith@example.com","country":"NL","signup_date":"2025-01-10"}
+{"customer_id":"C002","first_name":"Bob","last_name":"Jones","email":"bob.jones@example.com","country":"DE","signup_date":"2025-01-12"}
+{"customer_id":"C003","first_name":"Charlie","last_name":"Williams","email":"charlie.williams@example.com","country":"NL","signup_date":"2025-01-15"}
+{"customer_id":"C004","first_name":"Diana","last_name":"Brown","email":"diana.brown@example.com","country":"FR","signup_date":"2025-01-18"}
+{"customer_id":"C005","first_name":"Evan","last_name":"Davis","email":"evan.davis@example.com","country":"IT","signup_date":"2025-01-20"}
+{"customer_id":"","first_name":"Dick","last_name":"Blake","email":"dick.blake@example.com","country":"US","signup_date":"2025-01-01"}
